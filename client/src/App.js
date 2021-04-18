@@ -8,6 +8,7 @@ import { SignUp } from "./components/SignUp/SignUp"
 import { Home } from "./components/Home/Home"
 import { Chat } from "./components/Chat/Chat"
 import { ProtectedRoute } from "./helper/Route/ProtectedRoute"
+import { NotFound } from "./components/NotFound/NotFound"
 function App() {
   return (
     <>
@@ -31,6 +32,7 @@ function App() {
         <Route path="/signup" children={<SignUp />} />
         <ProtectedRoute path="/chat" fallbackRoute="/login" children={<Chat />}>
         </ProtectedRoute>
+        <Route path="/*" children={<NotFound />} />
       </Switch>
     </>
   )

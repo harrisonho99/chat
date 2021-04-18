@@ -1,7 +1,10 @@
+import { Typography } from "@material-ui/core"
 export const Chat = () => {
     return (
         <div>
-            Chat
+            <Typography variant="h1" align="center">
+                Chat 😈
+            </Typography>
         </div>
     )
 }
