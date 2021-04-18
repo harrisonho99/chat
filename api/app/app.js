@@ -1,8 +1,17 @@
 const express = require("express")
 const dirpath = require("../helper/path").dirPath
-require("dotenv").config({ path: dirpath + "/.env" })
+var admin = require("firebase-admin");
 const checkToken = require("../auth/checkToken")
+require("dotenv").config({ path: dirpath + "/.env" })
 
+// firebase admin SDK
+var serviceAccount = require(dirpath + "/chat-test-f624b-firebase-adminsdk-optsp-85b218d62b.json");
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+});
+
+admin.app
 
 
 const app = express()

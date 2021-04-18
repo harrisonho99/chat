@@ -6,7 +6,6 @@ const omitRoutes = /\/public/
 
 const checkToken = (req, res, next) => {
     if (omitRoutes.test(req.path)) {
-
         return next()
     }
     let authHeader = req.headers['authorization']
