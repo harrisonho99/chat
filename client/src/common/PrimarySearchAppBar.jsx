@@ -15,6 +15,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { SideDrawer } from "./SideDrawer"
+import { useSelector } from "../Global/bind-react/useSelector"
 const useStyles = makeStyles((theme) => ({
     grow: {
         flexGrow: 1,
@@ -83,10 +84,11 @@ const useStyles = makeStyles((theme) => ({
 
 export const PrimarySearchAppBar = () => {
     const classes = useStyles();
+    const context = useSelector((context) => ({ listMessage: context.listMessage, primaryDisplayName: context.displayName }))
     const [anchorEl, setAnchorEl] = useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
     const [drawerState, setDrawerState] = useState({
-        left: true,
+        left: false,
     });
 
     const isMenuOpen = Boolean(anchorEl);
@@ -174,7 +176,7 @@ export const PrimarySearchAppBar = () => {
     const drawerSide = "left"
     return (
         <div className={classes.grow}>
-            <SideDrawer anchor={drawerSide} toggleDrawer={toggleDrawer} drawerState={drawerState} />
+            <SideDrawer listMessage={context.listMessage} anchor={drawerSide} toggleDrawer={toggleDrawer} drawerState={drawerState} />
             <AppBar position="fixed" color="secondary">
                 <Toolbar>
                     <IconButton
@@ -187,7 +189,7 @@ export const PrimarySearchAppBar = () => {
                         <MenuIcon />
                     </IconButton>
                     <Typography className={classes.title} variant="h6" noWrap>
-                        Chat
+                        {context.primaryDisplayName ? context.primaryDisplayName : "Chat"}
                     </Typography>
                     <div className={classes.search}>
                         <div className={classes.searchWrapper}>

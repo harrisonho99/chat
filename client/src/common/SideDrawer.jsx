@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react';
+import { Fragment } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -7,9 +7,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-
+import { Link } from "react-router-dom"
+import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
 const useStyles = makeStyles({
     list: {
         width: 250,
@@ -18,7 +17,7 @@ const useStyles = makeStyles({
         width: 'auto',
     },
 });
-export const SideDrawer = ({ anchor, toggleDrawer, drawerState }) => {
+export const SideDrawer = ({ listMessage, anchor, toggleDrawer, drawerState }) => {
     const classes = useStyles();
     const list = (anchor) => (
         <div
@@ -30,12 +29,16 @@ export const SideDrawer = ({ anchor, toggleDrawer, drawerState }) => {
             onKeyDown={toggleDrawer(anchor, false)}
         >
             <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))}
+                {
+                    listMessage ? listMessage.map((user) => (
+                        <Link to={user.id} key={user.id} >
+                            <ListItem button >
+                                <ListItemIcon><AccountCircleTwoToneIcon /></ListItemIcon>
+                                <ListItemText primary={user.displayName} />
+                            </ListItem>
+                        </Link>
+                    )) : null
+                }
             </List>
         </div>
     );
