@@ -11,11 +11,9 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
 
-admin.app
-
+const defaultAuth = admin.auth()
 
 const app = express()
-
 
 
 // check token

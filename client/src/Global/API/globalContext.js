@@ -37,4 +37,5 @@ const createGlobalContext = (defaultContext) => {
     }
     return globalContext
 }
+
 export { createGlobalContext }
