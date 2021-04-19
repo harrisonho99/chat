@@ -7,7 +7,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { Link } from "react-router-dom"
+import { Link, useRouteMatch } from "react-router-dom"
 import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
 const useStyles = makeStyles({
     list: {
@@ -19,6 +19,7 @@ const useStyles = makeStyles({
 });
 export const SideDrawer = ({ listMessage, anchor, toggleDrawer, drawerState }) => {
     const classes = useStyles();
+
     const list = (anchor) => (
         <div
             className={clsx(classes.list, {
@@ -31,7 +32,7 @@ export const SideDrawer = ({ listMessage, anchor, toggleDrawer, drawerState }) =
             <List>
                 {
                     listMessage ? listMessage.map((user) => (
-                        <Link to={user.id} key={user.id} >
+                        <Link to={`/chat/${user.id}`} key={user.id} >
                             <ListItem button >
                                 <ListItemIcon><AccountCircleTwoToneIcon /></ListItemIcon>
                                 <ListItemText primary={user.displayName} />
