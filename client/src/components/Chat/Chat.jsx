@@ -1,9 +1,8 @@
 import { Typography, makeStyles, Container, Grid, TextField, } from "@material-ui/core"
 import { useForm } from "react-hook-form"
-
-
-
-
+import { connectWS } from "../../helper/connectWS/io"
+import { useSelector } from "../../Global/bind-react/useSelector"
+import { useEffect } from "react"
 
 const useStyles = makeStyles(() => {
     return (
@@ -22,8 +21,11 @@ const useStyles = makeStyles(() => {
 export const Chat = () => {
     const { handleSubmit, register, getValues, setValue } = useForm()
     const classes = useStyles()
-
-
+    const context = useSelector((context) => ({ socketURL: context.socketURL }))
+    useEffect(() => {
+        connectWS(context.socketURL)
+    }, [context.socketURL])
+    
     const onSubmit = (data, e) => {
         const { chat } = getValues()
         if (chat.length < 1) return
