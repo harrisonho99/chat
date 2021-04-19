@@ -16,6 +16,8 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { SideDrawer } from "./SideDrawer"
 import { useSelector } from "../Global/bind-react/useSelector"
+import RedoIcon from '@material-ui/icons/Redo';
+import { useHistory } from "react-router-dom"
 const useStyles = makeStyles((theme) => ({
     grow: {
         flexGrow: 1,
@@ -84,7 +86,13 @@ const useStyles = makeStyles((theme) => ({
 
 export const PrimarySearchAppBar = () => {
     const classes = useStyles();
-    const context = useSelector((context) => ({ listMessage: context.listMessage, primaryDisplayName: context.displayName }))
+    const history = useHistory()
+    const context = useSelector((context) => ({
+        listMessage: context.listMessage,
+        primaryDisplayName: context.displayName,
+        auth: context.auth
+    }))
+
     const [anchorEl, setAnchorEl] = useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
     const [drawerState, setDrawerState] = useState({
@@ -110,6 +118,16 @@ export const PrimarySearchAppBar = () => {
     const handleMobileMenuOpen = (event) => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
+    const handleSignOut = () => {
+        history.push("/signin")
+        setMobileMoreAnchorEl(null)
+    }
+    const handleShowChat = () => {
+        if (context.auth) {
+            history.push("/chat")
+            setMobileMoreAnchorEl(null)
+        }
+    }
     const toggleDrawer = (anchor, open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
@@ -130,6 +148,7 @@ export const PrimarySearchAppBar = () => {
         >
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
             <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+            <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
         </Menu>
     );
 
@@ -144,8 +163,8 @@ export const PrimarySearchAppBar = () => {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            <MenuItem>
-                <IconButton aria-label="show 4 new mails" color="inherit">
+            <MenuItem onClick={handleShowChat}>
+                <IconButton aria-label="show 4 new mails" color="inherit" >
                     <Badge badgeContent={4} color="secondary">
                         <MailIcon />
                     </Badge>
@@ -171,6 +190,20 @@ export const PrimarySearchAppBar = () => {
                 </IconButton>
                 <p>Profile</p>
             </MenuItem>
+            {context.auth ?
+                <MenuItem onClick={handleSignOut}>
+                    <IconButton
+                        aria-label="account of current user"
+                        aria-controls="primary-search-account-menu"
+                        aria-haspopup="true"
+                        color="inherit"
+                    >
+                        <Badge>
+                            <RedoIcon />
+                        </Badge>
+                    </IconButton>
+                    <p>Sign Out</p>
+                </MenuItem> : null}
         </Menu>
     );
     const drawerSide = "left"

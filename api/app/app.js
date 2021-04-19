@@ -1,6 +1,6 @@
+const dirpath = require("../helper/path").dirPath
 require("dotenv").config({ path: dirpath + "/.env" })
 const express = require("express")
-const dirpath = require("../helper/path").dirPath
 const checkToken = require("../auth/checkToken")
 
 
