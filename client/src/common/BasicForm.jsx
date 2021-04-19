@@ -22,12 +22,12 @@ const useStyles = makeStyles((theme => {
     }
 }))
 
-export const BasicForm = ({ title = "Sign In", submitData }) => {
+export const BasicForm = ({ title = "Sign In", submitForm }) => {
     const classes = useStyles()
     const { register, handleSubmit, formState: { errors } } = useForm()
     const onSubmit = data => {
-        if (submitData) {
-            submitData(data)
+        if (submitForm) {
+            submitForm(data)
         }
     }
     return (

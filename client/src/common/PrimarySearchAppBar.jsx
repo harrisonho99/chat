@@ -14,10 +14,11 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import { SideDrawer } from "./SideDrawer"
-import { useSelector } from "../Global/bind-react/useSelector"
+import { SideDrawer } from './SideDrawer';
+import { useSelector } from '../Global/bind-react/useSelector';
+import { useSetGlobalContext } from '../Global/bind-react/useSetGlobal';
 import RedoIcon from '@material-ui/icons/Redo';
-import { useHistory } from "react-router-dom"
+import { useHistory } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
     grow: {
         flexGrow: 1,
@@ -38,15 +39,15 @@ const useStyles = makeStyles((theme) => ({
         '&:hover': {
             backgroundColor: fade(theme.palette.common.white, 0.25),
         },
-        margin: "auto auto auto 2rem",
+        margin: 'auto auto auto 2rem',
         width: '100%',
         maxWidth: 600,
         minWidth: 200,
-        display: "flex",
+        display: 'flex',
     },
     searchWrapper: {
-        width: "fit-content",
-        margin: "auto"
+        width: 'fit-content',
+        margin: 'auto',
     },
     searchIcon: {
         padding: theme.spacing(0, 2),
@@ -65,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
         // vertical padding + font size from searchIcon
         paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
         transition: theme.transitions.create('width'),
-        width: "60%",
+        width: '60%',
         [theme.breakpoints.up('sm')]: {
             width: '20ch',
         },
@@ -86,12 +87,13 @@ const useStyles = makeStyles((theme) => ({
 
 export const PrimarySearchAppBar = () => {
     const classes = useStyles();
-    const history = useHistory()
+    const history = useHistory();
+    const setGlobal = useSetGlobalContext();
     const context = useSelector((context) => ({
         listMessage: context.listMessage,
         primaryDisplayName: context.displayName,
-        auth: context.auth
-    }))
+        auth: context.auth,
+    }));
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
@@ -119,17 +121,21 @@ export const PrimarySearchAppBar = () => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
     const handleSignOut = () => {
-        history.push("/signin")
-        setMobileMoreAnchorEl(null)
-    }
+        history.push('/signin');
+        setMobileMoreAnchorEl(null);
+        setGlobal({ auth: false });
+    };
     const handleShowChat = () => {
         if (context.auth) {
-            history.push("/chat")
-            setMobileMoreAnchorEl(null)
+            history.push('/chat');
+            setMobileMoreAnchorEl(null);
         }
-    }
+    };
     const toggleDrawer = (anchor, open) => (event) => {
-        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+        if (
+            event.type === 'keydown' &&
+            (event.key === 'Tab' || event.key === 'Shift')
+        ) {
             return;
         }
         setDrawerState({ ...drawerState, [anchor]: open });
@@ -148,7 +154,6 @@ export const PrimarySearchAppBar = () => {
         >
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
             <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-            <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
         </Menu>
     );
 
@@ -164,16 +169,16 @@ export const PrimarySearchAppBar = () => {
             onClose={handleMobileMenuClose}
         >
             <MenuItem onClick={handleShowChat}>
-                <IconButton aria-label="show 4 new mails" color="inherit" >
-                    <Badge badgeContent={4} color="secondary">
+                <IconButton aria-label='show 4 new mails' color='inherit'>
+                    <Badge badgeContent={4} color='secondary'>
                         <MailIcon />
                     </Badge>
                 </IconButton>
                 <p>Messages</p>
             </MenuItem>
             <MenuItem>
-                <IconButton aria-label="show 11 new notifications" color="inherit">
-                    <Badge badgeContent={11} color="secondary">
+                <IconButton aria-label='show 11 new notifications' color='inherit'>
+                    <Badge badgeContent={11} color='secondary'>
                         <NotificationsIcon />
                     </Badge>
                 </IconButton>
@@ -181,48 +186,52 @@ export const PrimarySearchAppBar = () => {
             </MenuItem>
             <MenuItem onClick={handleProfileMenuOpen}>
                 <IconButton
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
+                    aria-label='account of current user'
+                    aria-controls='primary-search-account-menu'
+                    aria-haspopup='true'
+                    color='inherit'
                 >
                     <AccountCircle />
                 </IconButton>
                 <p>Profile</p>
             </MenuItem>
-            {context.auth ?
+            {context.auth ? (
                 <MenuItem onClick={handleSignOut}>
                     <IconButton
-                        aria-label="account of current user"
-                        aria-controls="primary-search-account-menu"
-                        aria-haspopup="true"
-                        color="inherit"
+                        aria-label='account of current user'
+                        aria-controls='primary-search-account-menu'
+                        aria-haspopup='true'
+                        color='inherit'
                     >
-                        <Badge>
-                            <RedoIcon />
-                        </Badge>
+                        <RedoIcon />
                     </IconButton>
                     <p>Sign Out</p>
-                </MenuItem> : null}
+                </MenuItem>
+            ) : null}
         </Menu>
     );
-    const drawerSide = "left"
+    const drawerSide = 'left';
     return (
         <div className={classes.grow}>
-            <SideDrawer listMessage={context.listMessage} anchor={drawerSide} toggleDrawer={toggleDrawer} drawerState={drawerState} />
-            <AppBar position="fixed" color="secondary">
+            <SideDrawer
+                listMessage={context.listMessage}
+                anchor={drawerSide}
+                toggleDrawer={toggleDrawer}
+                drawerState={drawerState}
+            />
+            <AppBar position='fixed' color='secondary'>
                 <Toolbar>
                     <IconButton
-                        edge="start"
+                        edge='start'
                         className={classes.menuButton}
-                        color="inherit"
-                        aria-label="open drawer"
+                        color='inherit'
+                        aria-label='open drawer'
                         onClick={toggleDrawer(drawerSide, true)}
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        {context.primaryDisplayName ? context.primaryDisplayName : "Chat"}
+                    <Typography className={classes.title} variant='h6' noWrap>
+                        {context.primaryDisplayName ? context.primaryDisplayName : 'Chat'}
                     </Typography>
                     <div className={classes.search}>
                         <div className={classes.searchWrapper}>
@@ -230,7 +239,7 @@ export const PrimarySearchAppBar = () => {
                                 <SearchIcon />
                             </div>
                             <InputBase
-                                placeholder="Search…"
+                                placeholder='Search…'
                                 classes={{
                                     root: classes.inputRoot,
                                     input: classes.inputInput,
@@ -241,34 +250,41 @@ export const PrimarySearchAppBar = () => {
                     </div>
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
-                        <IconButton aria-label="show 4 new mails" color="inherit">
-                            <Badge badgeContent={4} color="secondary">
+                        <IconButton aria-label='show 4 new mails' color='inherit'>
+                            <Badge badgeContent={4} color='secondary'>
                                 <MailIcon />
                             </Badge>
                         </IconButton>
-                        <IconButton aria-label="show 17 new notifications" color="inherit">
-                            <Badge badgeContent={17} color="secondary">
+                        <IconButton aria-label='show 17 new notifications' color='inherit'>
+                            <Badge badgeContent={17} color='secondary'>
                                 <NotificationsIcon />
                             </Badge>
                         </IconButton>
                         <IconButton
-                            edge="end"
-                            aria-label="account of current user"
+                            edge='end'
+                            aria-label='account of current user'
                             aria-controls={menuId}
-                            aria-haspopup="true"
+                            aria-haspopup='true'
                             onClick={handleProfileMenuOpen}
-                            color="inherit"
+                            color='inherit'
                         >
                             <AccountCircle />
                         </IconButton>
+
+                        {context.auth ? (
+                            <IconButton aria-label='Sing Out' color='inherit'>
+                                {' '}
+                                <RedoIcon onClick={handleSignOut} />{' '}
+                            </IconButton>
+                        ) : null}
                     </div>
                     <div className={classes.sectionMobile}>
                         <IconButton
-                            aria-label="show more"
+                            aria-label='show more'
                             aria-controls={mobileMenuId}
-                            aria-haspopup="true"
+                            aria-haspopup='true'
                             onClick={handleMobileMenuOpen}
-                            color="inherit"
+                            color='inherit'
                         >
                             <MoreIcon />
                         </IconButton>
@@ -279,4 +295,4 @@ export const PrimarySearchAppBar = () => {
             {renderMenu}
         </div>
     );
-}
+};
