@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => {
 })
 
 export const Chat = () => {
-    const { handleSubmit, register, getValues, setValue } = useForm()
+    const { handleSubmit, register, reset } = useForm()
     const classes = useStyles()
     const context = useSelector((context) => ({ socketURL: context.socketURL }))
     useEffect(() => {
@@ -27,10 +27,10 @@ export const Chat = () => {
     }, [context.socketURL])
 
     const onSubmit = (data, e) => {
-        const { chat } = getValues()
+        const { chat } = data
         if (chat.length < 1) return
         console.log({ data })
-        setValue("chat", "")
+        reset()
     }
     return (
         <div>
@@ -43,7 +43,7 @@ export const Chat = () => {
                     </Grid >
                     <Grid item xs={12}>
                         <form className={classes.chatForm} onSubmit={handleSubmit(onSubmit)}>
-                            <TextField color="secondary" autoCapitalize="off" autoComplete="off" {...register("chat", { maxLength: 40 })} variant="filled" className={classes.chatInput} />
+                            <TextField color="secondary" autoCapitalize="off" autoComplete="off" defaultValue="" {...register("chat", { maxLength: 40 })} variant="filled" className={classes.chatInput} />
                         </form>
                     </Grid>
                 </Grid>
