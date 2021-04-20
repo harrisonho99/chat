@@ -25,7 +25,7 @@ export const Chat = () => {
     useEffect(() => {
         connectWS(context.socketURL)
     }, [context.socketURL])
-    
+
     const onSubmit = (data, e) => {
         const { chat } = getValues()
         if (chat.length < 1) return

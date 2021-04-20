@@ -221,7 +221,7 @@ export const PrimarySearchAppBar = () => {
             />
             <AppBar position='fixed' color='secondary'>
                 <Toolbar>
-                    <IconButton
+                    {context.auth ? <IconButton
                         edge='start'
                         className={classes.menuButton}
                         color='inherit'
@@ -229,9 +229,10 @@ export const PrimarySearchAppBar = () => {
                         onClick={toggleDrawer(drawerSide, true)}
                     >
                         <MenuIcon />
-                    </IconButton>
+                    </IconButton> : null}
+
                     <Typography className={classes.title} variant='h6' noWrap>
-                        {context.primaryDisplayName ? context.primaryDisplayName : 'Chat'}
+                        {context.auth ? context.primaryDisplayName : 'Chat'}
                     </Typography>
                     <div className={classes.search}>
                         <div className={classes.searchWrapper}>
@@ -272,9 +273,8 @@ export const PrimarySearchAppBar = () => {
                         </IconButton>
 
                         {context.auth ? (
-                            <IconButton aria-label='Sing Out' color='inherit'>
-                                {' '}
-                                <RedoIcon onClick={handleSignOut} />{' '}
+                            <IconButton aria-label='Sign Out' color='inherit'>
+                                <RedoIcon onClick={handleSignOut} />
                             </IconButton>
                         ) : null}
                     </div>
