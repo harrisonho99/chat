@@ -6,6 +6,16 @@ const app = express();
 const httpSever = require('http').createServer(app);
 const { Server } = require('socket.io');
 
+const bodyParser = require('body-parser');
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+ 
+// parse application/json
+app.use(bodyParser.json());
+
+const publicRouter = require('../routers/authRouter');
+
 const io = new Server(httpSever, {
   cors: {
     origin: process.env.REQUEST_URL,
@@ -41,6 +51,9 @@ io.on('connection', (socket) => {
 app.use(checkToken);
 
 // midlewares logic
+
+app.use('/public', publicRouter);
+
 app.use((_, res) => {
   res.json({ message: "you're vetified" });
 });
@@ -50,6 +63,7 @@ app.use('/', (_, res) => {
     message: 'hello there 👋',
   });
 });
+
 
 // handle not found resources
 app.use((_, res) => {
