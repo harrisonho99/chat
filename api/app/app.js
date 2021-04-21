@@ -5,8 +5,10 @@ const checkToken = require('../auth/checkToken');
 const app = express();
 const httpSever = require('http').createServer(app);
 const { Server } = require('socket.io');
+const cors = require('cors');
 
 const bodyParser = require('body-parser');
+app.use(cors())
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
