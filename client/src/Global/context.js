@@ -12,5 +12,5 @@ export const context = {
         { displayName: 'Thanh Tuấn', id: '1543' },
         { displayName: 'Đức Phát', id: '10842' },
     ],
-    socketURL: 'ws://localhost:4000/socket',
+    socketURL: 'ws://localhost:4000',
 };

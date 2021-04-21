@@ -273,8 +273,8 @@ export const PrimarySearchAppBar = () => {
                         </IconButton>
 
                         {context.auth ? (
-                            <IconButton aria-label='Sign Out' color='inherit'>
-                                <RedoIcon onClick={handleSignOut} />
+                            <IconButton aria-label='Sign Out' color='inherit' onClick={handleSignOut}>
+                                <RedoIcon />
                             </IconButton>
                         ) : null}
                     </div>

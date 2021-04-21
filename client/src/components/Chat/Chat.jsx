@@ -24,6 +24,7 @@ export const Chat = () => {
     const context = useSelector((context) => ({ socketURL: context.socketURL }))
     useEffect(() => {
         connectWS(context.socketURL)
+        
     }, [context.socketURL])
 
     const onSubmit = (data, e) => {
