@@ -45,35 +45,35 @@ export const RegisterForm = ({ title = 'Sign In', submitForm }) => {
   } = useForm();
   const onSubmit = (formData) => {
     let isValidForm = true;
-    for (let key in formData) {
-      if (key === 'displayName') {
-        isValidForm =
-          typeof formData[key] === 'string' && formData[key].length > 0
-            ? isValidForm
-            : false;
-      }
-      if (key === 'username') {
-        isValidForm =
-          typeof formData[key] === 'string' && formData[key].length > 0
-            ? isValidForm
-            : false;
-      }
-      if (key === 'password') {
-        isValidForm =
-          typeof formData[key] === 'string' &&
-          formData[key].length > 6 &&
-          formData[key].length < 30
-            ? isValidForm
-            : false;
-      }
-      if (key === 'confirmPassword') {
-        isValidForm =
-          formData[key] === formData['password'] ? isValidForm : false;
-      }
-    }
-    if (isValidForm) {
+    // for (let key in formData) {
+    //   if (key === 'displayName') {
+    //     isValidForm =
+    //       typeof formData[key] === 'string' && formData[key].length > 0
+    //         ? isValidForm
+    //         : false;
+    //   }
+    //   if (key === 'username') {
+    //     isValidForm =
+    //       typeof formData[key] === 'string' && formData[key].length > 0
+    //         ? isValidForm
+    //         : false;
+    //   }
+    //   if (key === 'password') {
+    //     isValidForm =
+    //       typeof formData[key] === 'string' &&
+    //       formData[key].length > 6 &&
+    //       formData[key].length < 30
+    //         ? isValidForm
+    //         : false;
+    //   }
+    //   if (key === 'confirmPassword') {
+    //     isValidForm =
+    //       formData[key] === formData['password'] ? isValidForm : false;
+    //   }
+    // }
+    // if (isValidForm) {
       submitForm(formData);
-    }
+    // }
   };
   return (
     <Container className={classes.container}>
