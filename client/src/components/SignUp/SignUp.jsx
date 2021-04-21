@@ -1,6 +1,14 @@
-import { BasicForm } from "../../common/BasicForm"
+import { RegisterForm } from '../../common/RegisterForm';
+import { publicRequest } from '../../helper/request/request';
 export const SignUp = () => {
-    return (
-        <BasicForm title="SIGN UP 😏" />
-    )
-}
+  const onFormSubmit = (data) => {
+    publicRequest({ method: 'POST', data })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  return <RegisterForm title='SIGN UP 😏' submitForm={onFormSubmit} />;
+};

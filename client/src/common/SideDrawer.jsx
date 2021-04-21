@@ -70,12 +70,8 @@ export const SideDrawer = ({
       <List className={classes.wrapListContact}>
         {listMessage
           ? listMessage.map((user) => (
-              <>
-                <Link
-                  to={`/chat/${user.id}`}
-                  key={user.id}
-                  className={classes.contactItem}
-                >
+              <Fragment key={user.id}>
+                <Link to={`/chat/${user.id}`} className={classes.contactItem}>
                   <ListItem button>
                     <ListItemIcon>
                       <AccountCircleTwoToneIcon className={classes.userIcon} />
@@ -90,7 +86,7 @@ export const SideDrawer = ({
                   </ListItem>
                 </Link>
                 <Divider />
-              </>
+              </Fragment>
             ))
           : null}
       </List>
