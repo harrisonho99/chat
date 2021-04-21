@@ -12,6 +12,7 @@ const useSelector = (selector) => {
         return subscribe(() => {
             setState(selector(getContext()))
         })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     return state
 }

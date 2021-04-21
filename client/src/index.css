@@ -3,6 +3,7 @@
 }
 html {
   background-color: whitesmoke;
+  position: relative;
 }
 body {
   margin: 0;
