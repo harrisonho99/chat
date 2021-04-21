@@ -5,6 +5,6 @@ const User = require('../model/User');
 
 router.post('/signup',publicController.postSignup);
 
-router.post('/login',publicController.postLogin);
+router.post('/signin',publicController.postSignin);
 
 module.exports = router;

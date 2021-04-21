@@ -16,6 +16,6 @@ module.exports.postSignup = async (req, res) =>{
 }
 
 
-module.exports.postLogin = (req, res) =>{
+module.exports.postSignin = (req, res) =>{
     res.send('login');
 }
