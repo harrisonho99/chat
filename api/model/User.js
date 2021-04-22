@@ -2,10 +2,10 @@ const mongoose = ({ Schema } = require('mongoose'));
 
 const UserSchema = new Schema({
   displayName: { type: String, required: true },
-  username: { type: String, required: true, unique: true , dropDups: true},
+  username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  friendsList: { type: Array },
-  messageList: { type: Array },
+  friendsList: [],
+  messageList: [],
 });
 
 module.exports = mongoose.model('User', UserSchema);

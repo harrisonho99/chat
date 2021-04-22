@@ -7,6 +7,7 @@ import {
   Container,
   Grid,
 } from '@material-ui/core';
+
 const useStyles = makeStyles((theme) => {
   return {
     container: { display: 'flex' },
@@ -35,7 +36,12 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export const RegisterForm = ({ title = 'Sign In', submitForm }) => {
+export const RegisterForm = ({
+  title = 'Sign In',
+  submitForm,
+  isLoading,
+  flashMessage,
+}) => {
   const classes = useStyles();
 
   const {
@@ -72,7 +78,7 @@ export const RegisterForm = ({ title = 'Sign In', submitForm }) => {
     //   }
     // }
     // if (isValidForm) {
-      submitForm(formData);
+    submitForm(formData);
     // }
   };
   return (
@@ -88,6 +94,9 @@ export const RegisterForm = ({ title = 'Sign In', submitForm }) => {
               </legend>
               <div className={classes.inputWrapper}>
                 <TextField
+                  disabled={isLoading}
+                  autoComplete='off'
+                  autoCapitalize='off'
                   className={classes.field}
                   color='secondary'
                   label='Full Name'
@@ -99,11 +108,14 @@ export const RegisterForm = ({ title = 'Sign In', submitForm }) => {
               </div>
               {errors.username && (
                 <Typography variant='caption' color='secondary'>
-                  {/* {errors.username} */}
+                  Full name is required
                 </Typography>
               )}
               <div className={classes.inputWrapper}>
                 <TextField
+                  disabled={isLoading}
+                  autoComplete='off'
+                  autoCapitalize='off'
                   className={classes.field}
                   color='secondary'
                   label='Username'
@@ -120,6 +132,7 @@ export const RegisterForm = ({ title = 'Sign In', submitForm }) => {
               )}
               <div className={classes.inputWrapper}>
                 <TextField
+                  disabled={isLoading}
                   className={classes.field}
                   variant='outlined'
                   color='secondary'
@@ -136,6 +149,7 @@ export const RegisterForm = ({ title = 'Sign In', submitForm }) => {
               )}
               <div className={classes.inputWrapper}>
                 <TextField
+                  disabled={isLoading}
                   className={classes.field}
                   variant='outlined'
                   color='secondary'
@@ -152,6 +166,7 @@ export const RegisterForm = ({ title = 'Sign In', submitForm }) => {
               )}
               <div className={classes.inputWrapper}>
                 <Button
+                  disabled={isLoading}
                   size='large'
                   type='submit'
                   variant='contained'
