@@ -11,6 +11,7 @@ import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
 import ContactlessIcon from '@material-ui/icons/Contactless';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { SimpleMenu } from './SimpleMenu';
+import "./SideDrawrer.css"
 const useStyles = makeStyles((theme) => {
   return {
     list: {
@@ -38,11 +39,17 @@ const useStyles = makeStyles((theme) => {
     userIcon: {
       color: '#ea80fc',
       fontSize: theme.spacing(4),
+      verticalAlign: 'middle',
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center"
     },
     wrapListContact: {
       maxHeight: '100%',
       overflowY: 'scroll',
-    },
+    }, listItem: {
+      height: 80
+    }
   };
 });
 export const SideDrawer = ({
@@ -67,27 +74,27 @@ export const SideDrawer = ({
         </span>
       </Typography>
       <Divider />
-      <List className={classes.wrapListContact}>
+      <List className={classes.wrapListContact} id="mobile-nav-list-friend">
         {listMessage
           ? listMessage.map((user) => (
-              <Fragment key={user.id}>
-                <Link to={`/chat/${user.id}`} className={classes.contactItem}>
-                  <ListItem button>
-                    <ListItemIcon>
-                      <AccountCircleTwoToneIcon className={classes.userIcon} />
-                    </ListItemIcon>
-                    <ListItemText primary={user.displayName} />
-                    <ListItemIcon>
-                      <FiberManualRecordIcon
-                        titleAccess='online'
-                        className={classes.visibilityActiveIcon}
-                      />
-                    </ListItemIcon>
-                  </ListItem>
-                </Link>
-                <Divider />
-              </Fragment>
-            ))
+            <Fragment key={user.id}>
+              <Link to={`/chat/${user.id}`} className={classes.contactItem}>
+                <ListItem button className={classes.listItem}>
+                  <ListItemIcon >
+                    <AccountCircleTwoToneIcon className={classes.userIcon} />
+                  </ListItemIcon>
+                  <ListItemText primary={user.displayName} />
+                  <ListItemIcon>
+                    <FiberManualRecordIcon
+                      titleAccess='online'
+                      className={classes.visibilityActiveIcon}
+                    />
+                  </ListItemIcon>
+                </ListItem>
+              </Link>
+              <Divider />
+            </Fragment>
+          ))
           : null}
       </List>
       <SimpleMenu />

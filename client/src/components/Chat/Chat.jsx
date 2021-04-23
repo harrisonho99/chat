@@ -50,11 +50,14 @@ export const Chat = () => {
     socket.on('users', (users) => {
       console.log(users);
     });
+    socket.on("message", (data) => {
+      console.log(data)
+    })
   }, [context.socketURL, context.id]);
 
   const onSubmit = (data, e) => {
     const { chat } = data;
-    if (chat.length < 1) return;
+    if (!chat && chat.length < 1) return;
     console.log({ data });
     reset();
   };

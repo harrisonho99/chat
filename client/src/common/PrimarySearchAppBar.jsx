@@ -180,7 +180,7 @@ export const PrimarySearchAppBar = () => {
       onClose={handleMobileMenuClose}
     >
       {context.auth ? (
-        <>
+        <div>
           <MenuItem onClick={handleShowChat}>
             <IconButton aria-label='show 4 new mails' color='inherit'>
               <Badge badgeContent={4} color='secondary'>
@@ -219,7 +219,7 @@ export const PrimarySearchAppBar = () => {
             </IconButton>
             <p>Sign Out</p>
           </MenuItem>
-        </>
+        </div>
       ) : (
         <>
           <MenuItem onClick={handleSignIn}>

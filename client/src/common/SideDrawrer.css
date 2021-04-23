@@ -1,0 +1,15 @@
+#mobile-nav-list-friend::-webkit-scrollbar {
+  width: 10px;
+  border-radius: 5px;
+}
+#mobile-nav-list-friend::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+#mobile-nav-list-friend::-webkit-scrollbar-thumb {
+  background: rgb(197, 197, 197);
+  border-radius: 5px;
+}
+
+#mobile-nav-list-friend::-webkit-scrollbar-thumb:hover {
+  background: rgb(145, 145, 145);
+}

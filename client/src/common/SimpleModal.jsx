@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     display: 'flex',
-    height: 50,
+    height: 48,
     width: '100%',
     justifyContent: 'space-evenly',
     alignItems: 'center',
@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
   submitButton: {
     height: '100%',
   },
+
 }));
 
 export function SimpleModal({ isModelOpen }) {
@@ -41,7 +42,7 @@ export function SimpleModal({ isModelOpen }) {
   const [modalStyle] = useState(getModalStyle);
   const { register, reset, handleSubmit } = useForm();
 
-  const handleClose = () => {};
+  const handleClose = () => { };
   const onAddNewbox = (data) => {
     console.log(data);
     reset();
@@ -62,6 +63,8 @@ export function SimpleModal({ isModelOpen }) {
       </Typography>
       <form onSubmit={handleSubmit(onAddNewbox)} className={classes.form}>
         <TextField
+          size="small"
+          className={classes.input}
           autoCapitalize='off'
           autoComplete='off'
           defaultValue=''
