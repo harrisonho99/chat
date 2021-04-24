@@ -16,6 +16,9 @@ export const Emoji = ({ onSelectEmoji }) => {
   return (
     <>
       <Picker
+        onClick={(_, event) => {
+          event.stopPropagation();
+        }}
         showPreview={false}
         title={null}
         emojiSize={22}

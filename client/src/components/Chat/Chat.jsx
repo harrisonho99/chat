@@ -73,7 +73,15 @@ export const Chat = () => {
       socket.disconnect();
     };
   }, [context.socketURL, context.id]);
-
+  useEffect(() => {
+    const blur = () => {
+      setShowEmojiPicker(false);
+    };
+    document.addEventListener('click', blur);
+    return () => {
+      document.removeEventListener('click', blur);
+    };
+  });
   //handle Emoji
   const onSelectEmoji = (emoji) => {
     console.log(emoji);
@@ -102,7 +110,13 @@ export const Chat = () => {
             </Typography>
           </Grid>
           <Grid item xs={12} className={classes.gridForm}>
-            <form className={classes.chatForm} onSubmit={handleSubmit}>
+            <form
+              className={classes.chatForm}
+              onSubmit={handleSubmit}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
               <TextField
                 id='input-wrapper'
                 color='secondary'
