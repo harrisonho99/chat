@@ -2,7 +2,7 @@ export const context = {
   minWidth: 600,
   token: null,
   refreshToken: null,
-  auth: true,
+  auth: false,
   id: null,
   displayName: null,
   logoURL:
