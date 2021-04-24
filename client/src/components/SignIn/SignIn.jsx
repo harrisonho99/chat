@@ -27,9 +27,8 @@ export const SignIn = () => {
     });
     // push up to server
     let postRequest;
-
     // configure request URL for my phone 😛
-    if (navigator.userAgent.includes('Safari')) {
+    if (navigator.platform.includes('iPhone')) {
       postRequest = publicRequestMobile({
         method: 'POST',
         data,
