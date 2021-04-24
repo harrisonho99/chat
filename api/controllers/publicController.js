@@ -1,6 +1,6 @@
 const User = require('../model/User');
 const Response = require('../helper/Response');
-
+const jwt = require('jsonwebtoken');
 module.exports.postSignup = (request, respsonse) => {
   const displayName = request.body.displayName;
   const username = request.body.username;
@@ -65,7 +65,15 @@ module.exports.postSignin = (request, respsonse) => {
           'Username or password was wrong 😢'
         );
       }
-      respsonse.json({ user: result, message: 'Signin sucessful 😘' });
+      // respsonse.json({ user: result, message: 'Signin sucessful 😘' });
+      const token = jwt.sign(result, process.env.JWT_token, {
+        expiresIn: '30 days',
+      });
+      respsonse.json({
+        user: result,
+        token,
+        message: 'Signin sucessful 😘',
+      });
     })
     .catch((err) => {
       console.error(err);
