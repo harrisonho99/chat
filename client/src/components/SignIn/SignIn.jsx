@@ -1,20 +1,92 @@
-import { BasicForm } from "../../common/BasicForm"
-import { useSetGlobalContext } from "../../Global/bind-react/useSetGlobal"
-import { useHistory } from "react-router-dom"
+import { useState } from 'react';
+import { BasicForm } from '../../common/BasicForm';
+import { useSetGlobalContext } from '../../Global/bind-react/useSetGlobal';
+import { useHistory } from 'react-router-dom';
+import {
+  publicRequest,
+  publicRequestMobile,
+} from '../../helper/request/request';
+import { SimpleSnackbar } from '../../common/SimpleSnackbar';
+
 export const SignIn = () => {
-    const history = useHistory()
-    const setGlobal = useSetGlobalContext()
-    const handleSubmit = (data) => {
-        let validForm = false
-        for (let key in data) {
-            validForm = !!data[key]
-        }
-        if (validForm) {
-            setGlobal({ auth: true })
-            history.push("/chat")
-        }
+  const history = useHistory();
+  const setGlobal = useSetGlobalContext();
+  const [request, setRequest] = useState({
+    isLoading: false,
+    flashMessage: null,
+    isOpenSnackbar: false,
+    severity: 'error',
+  });
+  const toggleSnackbar = (value) => {
+    setRequest(Object.assign({}, request, { isOpenSnackbar: value }));
+  };
+  const handleSubmit = (data) => {
+    setRequest({
+      ...request,
+      isLoading: true,
+    });
+    // push up to server
+    let postRequest;
+
+    // configure request URL for my phone 😛
+    if (navigator.userAgent.includes('Safari')) {
+      postRequest = publicRequestMobile({
+        method: 'POST',
+        data,
+        url: '/signin',
+      });
+    } else {
+      postRequest = publicRequest({
+        method: 'POST',
+        url: '/signin',
+        data,
+      });
     }
-    return (
-        <BasicForm title="SIGN IN 😝" submitForm={handleSubmit} />
-    )
-}
+    postRequest
+      .then(({ data }) => {
+        if (data.user) {
+          const { displayName, _id: id } = data.user;
+          setGlobal({ auth: true, displayName, id });
+          setRequest({
+            ...request,
+            severity: 'success',
+            flashMessage: data.message,
+            isLoading: false,
+            isOpenSnackbar: true,
+          });
+          return setTimeout(history.push, 2000, '/chat');
+        }
+        setRequest({
+          ...request,
+          flashMessage: data.message,
+          severity: 'error',
+          isOpenSnackbar: true,
+          isLoading: false,
+        });
+      })
+      .catch(() => {
+        setRequest({
+          ...request,
+          flashMessage: 'Some thing was wrong!',
+          isOpenSnackbar: true,
+          isLoading: false,
+          severity: 'error',
+        });
+      });
+  };
+  return (
+    <>
+      <BasicForm
+        title='SIGN IN 😝'
+        submitForm={handleSubmit}
+        isLoading={request.isLoading}
+      />
+      <SimpleSnackbar
+        open={request.isOpenSnackbar}
+        message={request.flashMessage}
+        setOpen={toggleSnackbar}
+        severity={request.severity}
+      />
+    </>
+  );
+};

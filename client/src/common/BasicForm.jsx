@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export const BasicForm = ({ title = 'Sign In', submitForm }) => {
+export const BasicForm = ({ title = 'Sign In', submitForm, isLoading }) => {
   const classes = useStyles();
   const {
     register,
@@ -60,6 +60,9 @@ export const BasicForm = ({ title = 'Sign In', submitForm }) => {
               </legend>
               <div className={classes.inputWrapper}>
                 <TextField
+                  disabled={isLoading}
+                  autoCapitalize='off'
+                  autoComplete='off'
                   className={classes.field}
                   color='secondary'
                   label='UserName'
@@ -76,6 +79,9 @@ export const BasicForm = ({ title = 'Sign In', submitForm }) => {
               )}
               <div className={classes.inputWrapper}>
                 <TextField
+                  disabled={isLoading}
+                  autoCapitalize='off'
+                  autoComplete='off'
                   className={classes.field}
                   variant='outlined'
                   color='secondary'
@@ -92,6 +98,7 @@ export const BasicForm = ({ title = 'Sign In', submitForm }) => {
               )}
               <div className={classes.inputWrapper}>
                 <Button
+                  disabled={isLoading}
                   size='large'
                   type='submit'
                   variant='contained'

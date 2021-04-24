@@ -53,6 +53,9 @@ export const Chat = () => {
     socket.on("message", (data) => {
       console.log(data)
     })
+    return ()=>{
+      socket.disconnect()
+    }
   }, [context.socketURL, context.id]);
 
   const onSubmit = (data, e) => {

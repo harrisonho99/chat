@@ -1,28 +1,77 @@
 const User = require('../model/User');
 const Response = require('../helper/Response');
 
-module.exports.postSignup = (req, res) => {
-  console.log(req.body);
-  const user = new User({
-    displayName: req.body.displayName,
-    username: req.body.username,
-    password: req.body.password,
-  });
-  user
-    .save()
-    .then((value) => {
-      res.json({ user: value._id, message: 'Register sucessful 😘' });
+module.exports.postSignup = (request, respsonse) => {
+  const displayName = request.body.displayName;
+  const username = request.body.username;
+  const password = request.body.password;
+  console.log(request.body);
+  //Check if usernam is already existing ?
+  User.findOne({ username })
+    .exec()
+    .then((result) => {
+      if (!result) {
+        const user = new User({
+          displayName,
+          username,
+          password,
+          createAt: new Date(),
+        });
+        return user
+          .save()
+          .then((value) => {
+            respsonse.json({
+              user: value._id,
+              message: 'Register sucessful 😘',
+            });
+          })
+          .catch((err) => {
+            console.error(err);
+            Response.responseWithCode(
+              respsonse,
+              'some thing was wrong, try again !',
+              400
+            );
+          });
+      } else {
+        Response.responseWithCode(
+          respsonse,
+          'usename is already existed 😢',
+          200
+        );
+      }
     })
     .catch((err) => {
       console.log(err);
-      err.code === 11000
-        ? Response.responseWithCode(res, 'usename is already existed 😢', 200)
-        : Response.responseWithCode(
-            res,
-            'some thing was wrong, try again !',
-            400
-          );
+      Response.responseWithCode(
+        respsonse,
+        'some thing was wrong, try again !',
+        400
+      );
     });
 };
 
-module.exports.postSignin = (req, res) => {};
+module.exports.postSignin = (request, respsonse) => {
+  const username = request.body.username;
+  const password = request.body.password;
+
+  User.findOne({ username, password })
+    .select('-password -createAt')
+    .exec()
+    .then((result) => {
+      if (!result) {
+        return Response.responseBasic(
+          respsonse,
+          'Username or password was wrong 😢'
+        );
+      }
+      respsonse.json({ user: result, message: 'Signin sucessful 😘' });
+    })
+    .catch((err) => {
+      console.error(err);
+      return Response.responseBasic(
+        respsonse,
+        'Username or password was wrong 😢'
+      );
+    });
+};

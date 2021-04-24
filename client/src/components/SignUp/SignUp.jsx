@@ -1,17 +1,19 @@
 import { RegisterForm } from '../../common/RegisterForm';
-import { publicRequest } from '../../helper/request/request';
+import {
+  publicRequest,
+  publicRequestMobile,
+} from '../../helper/request/request';
 import { useState } from 'react';
 import { SimpleSnackbar } from '../../common/SimpleSnackbar';
+import { useHistory } from 'react-router-dom';
 export const SignUp = () => {
+  const history = useHistory();
   const [request, setRequest] = useState({
     isLoading: false,
     flashMessage: null,
-    userID: null,
     isOpenSnackbar: false,
-    res: '',
     severity: 'error',
   });
-
   const toggleSnackbar = (value) => {
     setRequest(Object.assign({}, request, { isOpenSnackbar: value }));
   };
@@ -20,32 +22,42 @@ export const SignUp = () => {
       ...request,
       isLoading: true,
     });
-    publicRequest({ method: 'post', data })
-      .then((res) => {
-        setRequest({ ...request, res: JSON.stringify(res, null, 2) });
-        if (res.data.user) {
+    let postRequest;
+
+    // configure request URL for my phone 😛
+    if (navigator.userAgent.includes('Safari')) {
+      postRequest = publicRequestMobile({
+        method: 'POST',
+        data,
+        url: '/signup',
+      });
+    } else {
+      postRequest = publicRequest({ method: 'POST', data, url: '/signup' });
+    }
+    postRequest
+      .then((result) => {
+        if (result.data.user) {
           setRequest({
             ...request,
             severity: 'success',
-            flashMessage: res.data.message,
-            userID: res.data.user,
+            flashMessage: result.data.message,
             isLoading: false,
             isOpenSnackbar: true,
           });
+          setTimeout(history.push, 2000, '/signin');
         } else {
           setRequest({
             ...request,
-            flashMessage: res.data.message,
+            flashMessage: result.data.message,
             isOpenSnackbar: true,
             isLoading: false,
             severity: 'error',
           });
         }
       })
-      .catch((err) => {
+      .catch(() => {
         setRequest({
           ...request,
-          res: JSON.stringify(err, null, 2),
           flashMessage: 'Some thing was wrong!',
           isOpenSnackbar: true,
           isLoading: false,
@@ -55,7 +67,6 @@ export const SignUp = () => {
   };
   return (
     <>
-      {request.res}
       <SimpleSnackbar
         open={request.isOpenSnackbar}
         message={request.flashMessage}
@@ -66,7 +77,6 @@ export const SignUp = () => {
         title='SIGN UP 😏'
         submitForm={onFormSubmit}
         isLoading={request.isLoading}
-        flashMessage={request.flashMessage}
       />
     </>
   );

@@ -36,12 +36,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-export const RegisterForm = ({
-  title = 'Sign In',
-  submitForm,
-  isLoading,
-  flashMessage,
-}) => {
+export const RegisterForm = ({ title = 'Sign In', submitForm, isLoading }) => {
   const classes = useStyles();
 
   const {
@@ -50,7 +45,7 @@ export const RegisterForm = ({
     formState: { errors },
   } = useForm();
   const onSubmit = (formData) => {
-    let isValidForm = true;
+    // let isValidForm = true;
     // for (let key in formData) {
     //   if (key === 'displayName') {
     //     isValidForm =
@@ -78,9 +73,10 @@ export const RegisterForm = ({
     //   }
     // }
     // if (isValidForm) {
-    submitForm(formData);
     // }
+    submitForm(formData);
   };
+
   return (
     <Container className={classes.container}>
       <Grid container>

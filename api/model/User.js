@@ -6,6 +6,10 @@ const UserSchema = new Schema({
   password: { type: String, required: true },
   friendsList: [],
   messageList: [],
+  createAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 module.exports = mongoose.model('User', UserSchema);

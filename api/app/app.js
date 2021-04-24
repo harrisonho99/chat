@@ -4,19 +4,21 @@ const express = require('express');
 const checkToken = require('../auth/checkToken');
 const app = express();
 const httpSever = require('http').createServer(app);
+const publicRouter = require('../routers/publicRouter');
 const { Server } = require('socket.io');
 const cors = require('cors');
 
 const bodyParser = require('body-parser');
-app.use(cors())
+
+// allow cors
+app.use(cors());
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
- 
+
 // parse application/json
 app.use(bodyParser.json());
 
-const publicRouter = require('../routers/authRouter');
 
 const io = new Server(httpSever, {
   cors: {
@@ -65,7 +67,6 @@ app.use('/', (_, res) => {
     message: 'hello there 👋',
   });
 });
-
 
 // handle not found resources
 app.use((_, res) => {
