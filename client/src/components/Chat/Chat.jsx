@@ -96,6 +96,7 @@ export const Chat = () => {
     if (!chat && chat.length < 1) return;
     console.log({ chat });
     setChat('');
+    setShowEmojiPicker(false);
   };
   const handleChatChange = (event) => {
     setChat(event.target.value);
