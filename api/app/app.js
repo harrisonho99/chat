@@ -19,7 +19,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-
 const io = new Server(httpSever, {
   cors: {
     origin: process.env.REQUEST_URL,
@@ -31,6 +30,7 @@ exports.io = io;
 /* socket middleware  */
 io.use((socket, next) => {
   const userID = socket.handshake.auth.id;
+
   if (!userID) return next(new Error('userID is not correct!'));
   socket.userID = userID;
   next();
@@ -53,6 +53,8 @@ io.on('connection', (socket) => {
 /* express middleware  */
 // check token
 app.use(checkToken);
+
+// app.use("/private", privateRoute)
 
 // midlewares logic
 

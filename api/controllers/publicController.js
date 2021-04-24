@@ -66,7 +66,7 @@ module.exports.postSignin = (request, respsonse) => {
         );
       }
       // respsonse.json({ user: result, message: 'Signin sucessful 😘' });
-      const token = jwt.sign(result, process.env.JWT_token, {
+      const token = jwt.sign({ result }, process.env.JWT_KEY, {
         expiresIn: '30 days',
       });
       respsonse.json({

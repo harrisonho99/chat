@@ -8,6 +8,7 @@ import {
 } from '../../helper/request/request';
 import { SimpleSnackbar } from '../../common/SimpleSnackbar';
 
+
 export const SignIn = () => {
   const history = useHistory();
   const setGlobal = useSetGlobalContext();
@@ -44,6 +45,7 @@ export const SignIn = () => {
     postRequest
       .then(({ data }) => {
         if (data.user) {
+          console.log(data);
           const { displayName, _id: id } = data.user;
           setGlobal({ auth: true, displayName, id });
           setRequest({
