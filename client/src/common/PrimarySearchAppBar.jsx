@@ -21,7 +21,7 @@ import RedoIcon from '@material-ui/icons/Redo';
 import { useHistory } from 'react-router-dom';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import PersonIcon from '@material-ui/icons/Person';
-
+import { removeLocalStorage } from "../helper/tool/persistLocalStorage"
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -128,7 +128,15 @@ export const PrimarySearchAppBar = () => {
   const handleSignOut = () => {
     history.push('/signin');
     setMobileMoreAnchorEl(null);
-    setGlobal({ auth: false });
+    setGlobal({
+      id: null,
+      auth: false,
+      token: null,
+      refreshToken: null,
+      displayName: null,
+      socketID: null,
+    });
+    removeLocalStorage()
   };
   const handleShowChat = () => {
     if (context.auth) {

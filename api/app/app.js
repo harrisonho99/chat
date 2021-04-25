@@ -46,13 +46,14 @@ io.on('connection', (socket) => {
       displayName: socket.displayName
     });
   }
+  console.log(users)
   socket.broadcast.emit('users', users);
   socket.on('disconnect', () => {
     console.log('a user disconnected!');
   });
 
   socket.on("private message", (data) => {
-    console.log(data)
+    // console.log(data)
   })
 
 

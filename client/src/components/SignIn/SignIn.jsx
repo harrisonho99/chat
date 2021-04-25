@@ -7,11 +7,11 @@ import {
   publicRequestMobile,
 } from '../../helper/request/request';
 import { SimpleSnackbar } from '../../common/SimpleSnackbar';
-
+import { setLocalStorage } from "../../helper/tool/persistLocalStorage"
 
 export const SignIn = () => {
   const history = useHistory();
-  const setGlobal = useSetGlobalContext();
+  const setContext = useSetGlobalContext();
   const [request, setRequest] = useState({
     isLoading: false,
     flashMessage: null,
@@ -45,9 +45,9 @@ export const SignIn = () => {
     postRequest
       .then(({ data }) => {
         if (data.user) {
-          console.log(data);
           const { displayName, _id: id } = data.user;
-          setGlobal({ auth: true, displayName, id });
+          const USER_INFO = { auth: true, displayName, id, token: data.token }
+          setLocalStorage(USER_INFO, setContext)
           setRequest({
             ...request,
             severity: 'success',

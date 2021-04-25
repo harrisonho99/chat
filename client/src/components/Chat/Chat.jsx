@@ -75,7 +75,6 @@ export const Chat = () => {
     socket.connect();
 
     socket.on('users', (users) => {
-      console.log(users);
       if (Array.isArray(users)) {
         setContext({ listUserActive: users })
       }
@@ -95,6 +94,7 @@ export const Chat = () => {
     return () => {
       socket.disconnect();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context.socketURL, context.id]);
 
 
