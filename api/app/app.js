@@ -14,7 +14,7 @@ const bodyParser = require('body-parser');
 app.use(cors());
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
 
 // parse application/json
 app.use(bodyParser.json());
@@ -30,9 +30,10 @@ exports.io = io;
 /* socket middleware  */
 io.use((socket, next) => {
   const userID = socket.handshake.auth.id;
-
+  const displayName = socket.handshake.auth.displayName
   if (!userID) return next(new Error('userID is not correct!'));
   socket.userID = userID;
+  socket.displayName = displayName
   next();
 });
 
@@ -41,14 +42,34 @@ io.on('connection', (socket) => {
   for (let [id, socket] of io.of('/').sockets) {
     users.push({
       socketID: id,
-      userID: socket.userID,
+      id: socket.userID,
+      displayName: socket.displayName
     });
   }
-  socket.emit('users', users);
+  socket.broadcast.emit('users', users);
   socket.on('disconnect', () => {
     console.log('a user disconnected!');
   });
+
+  socket.on("private message", (data) => {
+    console.log(data)
+  })
+
+
+  socket.on("connect_error", (err) => {
+    console.log("socket connection err")
+    if (err.message === "userID is not correct!") {
+      this.usernameAlreadySelected = false;
+      socket.off("connect_error");
+    }
+  });
 });
+
+
+
+
+
+
 
 /* express middleware  */
 // check token
@@ -60,19 +81,11 @@ app.use(checkToken);
 
 app.use('/public', publicRouter);
 
-app.use((_, res) => {
-  res.json({ message: "you're vetified" });
-});
 
-app.use('/', (_, res) => {
-  res.json({
-    message: 'hello there 👋',
-  });
-});
 
 // handle not found resources
 app.use((_, res) => {
-  res.json({ message: 'Not found' });
+  res.json({ message: 'Not found 😭' });
 });
 
 module.exports = httpSever;

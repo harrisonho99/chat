@@ -36,8 +36,9 @@ function App() {
             <Route path="/" exact children={<Home />} />
             <Route path="/signin" children={< SignIn />} />
             <Route path="/signup" children={<SignUp />} />
-            <ProtectedRoute path="/chat" fallbackRoute="/signin" children={<Chat />}>
-            </ProtectedRoute>
+            <ProtectedRoute path="/chat/:id" fallbackRoute="/signin" children={<Chat />} />
+            <ProtectedRoute path="/chat" fallbackRoute="/signin" children={<Chat />} />
+
             <Route path="/*" children={<NotFound />} />
           </Switch>
         </main>

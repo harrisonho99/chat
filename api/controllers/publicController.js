@@ -5,7 +5,6 @@ module.exports.postSignup = (request, respsonse) => {
   const displayName = request.body.displayName;
   const username = request.body.username;
   const password = request.body.password;
-  console.log(request.body);
   //Check if usernam is already existing ?
   User.findOne({ username })
     .exec()

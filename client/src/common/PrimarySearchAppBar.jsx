@@ -96,6 +96,8 @@ export const PrimarySearchAppBar = () => {
     listMessage: context.listMessage,
     primaryDisplayName: context.displayName,
     auth: context.auth,
+    listUserActive: context.listUserActive,
+    id: context.id
   }));
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -250,6 +252,8 @@ export const PrimarySearchAppBar = () => {
         anchor={drawerSide}
         toggleDrawer={toggleDrawer}
         drawerState={drawerState}
+        listUserActive={context.listUserActive}
+        userID={{ id: context.id }}
       />
       <AppBar position='fixed' color='secondary'>
         <Toolbar>

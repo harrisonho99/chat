@@ -20,7 +20,6 @@ export const Emoji = ({ onSelectEmoji }) => {
           event.stopPropagation();
         }}
         showPreview={false}
-        title={null}
         emojiSize={22}
         native
         onSelect={addEmoji}

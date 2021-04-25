@@ -1,6 +1,9 @@
 import { io } from 'socket.io-client';
 
-export const connectWS = (url = 'ws://localhost:4000') => {
-  const socket = io(url, { autoConnect: false });
+export const connectWS = (url, set) => {
+  if (set) {
+    set(url)
+  }
+  const socket = io(url,);
   return socket;
 };

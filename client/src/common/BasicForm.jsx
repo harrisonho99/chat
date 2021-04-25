@@ -61,8 +61,9 @@ export const BasicForm = ({ title = 'Sign In', submitForm, isLoading }) => {
               <div className={classes.inputWrapper}>
                 <TextField
                   disabled={isLoading}
-                  autoCapitalize='off'
                   autoComplete='off'
+                  autoCapitalize='none'
+                  autoCorrect="off"
                   className={classes.field}
                   color='secondary'
                   label='UserName'

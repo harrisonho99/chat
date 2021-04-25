@@ -8,13 +8,15 @@ import {
   Button,
   IconButton,
 } from '@material-ui/core';
-import { useForm } from 'react-hook-form';
 import { connectWS } from '../../helper/connectWS/io';
 import { useSelector } from '../../Global/bind-react/useSelector';
+import { useSetGlobalContext } from '../../Global/bind-react/useSetGlobal';
+
 import { useEffect, useState } from 'react';
 import MoodIcon from '@material-ui/icons/Mood';
 import { Emoji } from '../../common/Emoji';
-import emoji from 'emoji-mart/dist/components/emoji/emoji';
+import { useParams } from "react-router-dom"
+
 const useStyles = makeStyles((theme) => {
   return {
     chatForm: {
@@ -50,29 +52,54 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
+
 export const Chat = () => {
   const [isShowEmojiPicker, setShowEmojiPicker] = useState(false);
   const classes = useStyles();
+  const { id: param } = useParams();
   const [chat, setChat] = useState('');
+  const setContext = useSetGlobalContext()
   const context = useSelector((context) => ({
     socketURL: context.socketURL,
+    socketMobileURL: context.socketMobileURL,
     id: context.id,
+    displayName: context.displayName
   }));
+
+
+
   // handle socket
   useEffect(() => {
     const socket = connectWS(context.socketURL);
-    socket.auth = { id: context.id };
+    socket.auth = { id: context.id, displayName: context.displayName };
     socket.connect();
+
     socket.on('users', (users) => {
       console.log(users);
+      if (Array.isArray(users)) {
+        setContext({ listUserActive: users })
+      }
     });
-    socket.on('message', (data) => {
-      console.log(data);
-    });
+    socket.emit("private message", {
+      chat,
+      from: context.id,
+      to: param
+    })
+    socket.on("connect_error", (error) => {
+      console.log(error)
+    })
+    // socket.onAny((event, ...args) => {
+    //   setCheckSocket(socket.active)
+    // });
+    // disconnect socket when unmounting
     return () => {
       socket.disconnect();
     };
   }, [context.socketURL, context.id]);
+
+
+
+  // Emoji Picker
   useEffect(() => {
     const blur = () => {
       setShowEmojiPicker(false);
@@ -82,9 +109,10 @@ export const Chat = () => {
       document.removeEventListener('click', blur);
     };
   });
+
+
   //handle Emoji
   const onSelectEmoji = (emoji) => {
-    console.log(emoji);
     setChat(chat + emoji.native.toString());
   };
   const handleToggleEmoji = () => {
@@ -94,9 +122,18 @@ export const Chat = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!chat && chat.length < 1) return;
+
     console.log({ chat });
-    setChat('');
+    // if (socket && param) {
+    //   socket.emit("private message", {
+    //     chat,
+    //     from: context.id,
+    //     to: param
+    //   })
+    // }
     setShowEmojiPicker(false);
+    setChat('');
+
   };
   const handleChatChange = (event) => {
     setChat(event.target.value);
@@ -106,8 +143,8 @@ export const Chat = () => {
       <Container>
         <Grid container>
           <Grid item xs={12}>
-            <Typography variant='h1' align='center'>
-              Chat 😈
+            <Typography variant='h2' align='center'>
+              Chat 😁
             </Typography>
           </Grid>
           <Grid item xs={12} className={classes.gridForm}>

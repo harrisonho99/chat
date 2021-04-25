@@ -11,6 +11,8 @@ import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
 import ContactlessIcon from '@material-ui/icons/Contactless';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { SimpleMenu } from './SimpleMenu';
+import { sortListFriend } from "../helper/tool/sortListFriend"
+import FaceIcon from '@material-ui/icons/Face';
 import "./SideDrawrer.css"
 const useStyles = makeStyles((theme) => {
   return {
@@ -35,6 +37,7 @@ const useStyles = makeStyles((theme) => {
     visibilityActiveIcon: {
       color: '#00e676',
       fontSize: theme.spacing(2),
+      marginLeft: 40
     },
     userIcon: {
       color: '#ea80fc',
@@ -57,6 +60,8 @@ export const SideDrawer = ({
   anchor,
   toggleDrawer,
   drawerState,
+  listUserActive,
+  userID
 }) => {
   const classes = useStyles();
 
@@ -75,9 +80,23 @@ export const SideDrawer = ({
       </Typography>
       <Divider />
       <List className={classes.wrapListContact} id="mobile-nav-list-friend">
-        {listMessage
-          ? listMessage.map((user) => (
-            <Fragment key={user.id}>
+        {listUserActive
+          ? sortListFriend(listUserActive, userID).map((user, index) => (
+            index === 0 ? <Fragment key={user.id}>
+              <ListItem className={classes.listItem}>
+                <ListItemIcon >
+                  <FaceIcon className={classes.userIcon} />
+                </ListItemIcon>
+                <ListItemText primary={user.displayName + " (myself)"} />
+                <ListItemIcon>
+                  <FiberManualRecordIcon
+                    titleAccess='online'
+                    className={classes.visibilityActiveIcon}
+                  />
+                </ListItemIcon>
+              </ListItem>
+              <Divider />
+            </Fragment> : <Fragment key={user.id}>
               <Link to={`/chat/${user.id}`} className={classes.contactItem}>
                 <ListItem button className={classes.listItem}>
                   <ListItemIcon >

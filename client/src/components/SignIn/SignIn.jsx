@@ -53,9 +53,8 @@ export const SignIn = () => {
             severity: 'success',
             flashMessage: data.message,
             isLoading: false,
-            isOpenSnackbar: true,
           });
-          return setTimeout(history.push, 2000, '/chat');
+          return history.push('/chat')
         }
         setRequest({
           ...request,

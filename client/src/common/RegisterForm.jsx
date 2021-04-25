@@ -92,7 +92,8 @@ export const RegisterForm = ({ title = 'Sign In', submitForm, isLoading }) => {
                 <TextField
                   disabled={isLoading}
                   autoComplete='off'
-                  autoCapitalize='off'
+                  autoCapitalize='none'
+                  autoCorrect="off"
                   className={classes.field}
                   color='secondary'
                   label='Full Name'
@@ -111,7 +112,8 @@ export const RegisterForm = ({ title = 'Sign In', submitForm, isLoading }) => {
                 <TextField
                   disabled={isLoading}
                   autoComplete='off'
-                  autoCapitalize='off'
+                  autoCapitalize='none'
+                  autoCorrect="off"
                   className={classes.field}
                   color='secondary'
                   label='Username'
