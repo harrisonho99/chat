@@ -2,12 +2,10 @@ import { useState } from 'react';
 import { BasicForm } from '../../common/BasicForm';
 import { useSetGlobalContext } from '../../Global/bind-react/useSetGlobal';
 import { useHistory } from 'react-router-dom';
-import {
-  publicRequest,
-  publicRequestMobile,
-} from '../../helper/request/request';
+import { publicRequest } from '../../helper/request/request';
 import { SimpleSnackbar } from '../../common/SimpleSnackbar';
-import { setLocalStorage } from "../../helper/tool/persistLocalStorage"
+import { setLocalStorage } from '../../helper/tool/persistLocalStorage';
+import { setTokenIntoCookie } from '../../helper/tool/persistCookie';
 
 export const SignIn = () => {
   const history = useHistory();
@@ -26,35 +24,26 @@ export const SignIn = () => {
       ...request,
       isLoading: true,
     });
-    // push up to server
-    let postRequest;
-    // configure request URL for my phone 😛
-    if (navigator.platform.includes('iPhone')) {
-      postRequest = publicRequestMobile({
-        method: 'POST',
-        data,
-        url: '/signin',
-      });
-    } else {
-      postRequest = publicRequest({
-        method: 'POST',
-        url: '/signin',
-        data,
-      });
-    }
+    // post up to server
+    let postRequest = publicRequest({
+      method: 'POST',
+      url: '/signin',
+      data,
+    });
     postRequest
       .then(({ data }) => {
         if (data.user) {
           const { displayName, _id: id } = data.user;
-          const USER_INFO = { auth: true, displayName, id, token: data.token }
-          setLocalStorage(USER_INFO, setContext)
+          const USER_INFO = { auth: true, displayName, id };
+          setLocalStorage(USER_INFO, setContext);
+          setTokenIntoCookie(data.token);
           setRequest({
             ...request,
             severity: 'success',
             flashMessage: data.message,
             isLoading: false,
           });
-          return history.push('/chat')
+          return history.push('/chat');
         }
         setRequest({
           ...request,

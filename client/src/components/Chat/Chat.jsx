@@ -12,11 +12,11 @@ import { connectWS } from '../../helper/connectWS/io';
 import { useSelector } from '../../Global/bind-react/useSelector';
 import { useSetGlobalContext } from '../../Global/bind-react/useSetGlobal';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import MoodIcon from '@material-ui/icons/Mood';
 import { Emoji } from '../../common/Emoji';
-import { useParams } from "react-router-dom"
-
+import { useParams } from 'react-router-dom';
+import { privateRequest } from '../../helper/request/request';
 const useStyles = makeStyles((theme) => {
   return {
     chatForm: {
@@ -52,52 +52,81 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-
 export const Chat = () => {
   const [isShowEmojiPicker, setShowEmojiPicker] = useState(false);
   const classes = useStyles();
   const { id: param } = useParams();
   const [chat, setChat] = useState('');
-  const setContext = useSetGlobalContext()
+  const setContext = useSetGlobalContext();
+  const socket = useRef(null);
   const context = useSelector((context) => ({
     socketURL: context.socketURL,
     socketMobileURL: context.socketMobileURL,
     id: context.id,
-    displayName: context.displayName
+    displayName: context.displayName,
   }));
-
-
 
   // handle socket
   useEffect(() => {
-    const socket = connectWS(context.socketURL);
-    socket.auth = { id: context.id, displayName: context.displayName };
-    socket.connect();
-
-    socket.on('users', (users) => {
-      if (Array.isArray(users)) {
-        setContext({ listUserActive: users })
-      }
-    });
-    socket.emit("private message", {
-      chat,
-      from: context.id,
-      to: param
-    })
-    socket.on("connect_error", (error) => {
-      console.log(error)
-    })
-    // socket.onAny((event, ...args) => {
-    //   setCheckSocket(socket.active)
+    privateRequest()({ method: 'post', data: {} })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // socket.current = connectWS(context.socketURL);
+    // socket.current.auth = {
+    //   userID: context.id,
+    //   displayName: context.displayName,
+    // };
+    // socket.current.connect();
+    // // socket.current.on("connect", () => {
+    // socket.current.on('users', (users) => {
+    //   console.log(users);
+    //   if (Array.isArray(users)) {
+    //     setContext({ listUserActive: users });
+    //   }
     // });
-    // disconnect socket when unmounting
-    return () => {
-      socket.disconnect();
-    };
+    // socket.current.on('session', (data) => {
+    //   const { sessionID, userID } = data;
+    //   socket.current.auth = { sessionID };
+    //   localStorage.setItem('sessionID', sessionID);
+    //   socket.current.userID = userID;
+    // });
+
+    // let sessionID;
+    // try {
+    //   sessionID = window.localStorage['sessionID'];
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    // if (sessionID) {
+    //   socket.current.auth = {
+    //     sessionID,
+    //     userID: context.id,
+    //     displayName: context.displayName,
+    //   };
+    //   socket.current.connect();
+    // }
+    // socket.current.emit('private message', {
+    //   content: 'hello from ' + context.displayName,
+    //   sender: context.id,
+    //   receiver: param,
+    // });
+
+    // socket.current.on('private message', (data) => {
+    //   console.log(data);
+    // });
+
+    // socket.current.on('connect_error', (error) => {
+    //   console.log(error);
+    // });
+    // return () => {
+    //   socket.current.destroy();
+    // };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context.socketURL, context.id]);
-
-
 
   // Emoji Picker
   useEffect(() => {
@@ -110,7 +139,6 @@ export const Chat = () => {
     };
   });
 
-
   //handle Emoji
   const onSelectEmoji = (emoji) => {
     setChat(chat + emoji.native.toString());
@@ -122,18 +150,10 @@ export const Chat = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!chat && chat.length < 1) return;
-
+    console.log(socket.current);
     console.log({ chat });
-    // if (socket && param) {
-    //   socket.emit("private message", {
-    //     chat,
-    //     from: context.id,
-    //     to: param
-    //   })
-    // }
     setShowEmojiPicker(false);
     setChat('');
-
   };
   const handleChatChange = (event) => {
     setChat(event.target.value);

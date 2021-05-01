@@ -1,7 +1,6 @@
 import { RegisterForm } from '../../common/RegisterForm';
 import {
   publicRequest,
-  publicRequestMobile,
 } from '../../helper/request/request';
 import { useState } from 'react';
 import { SimpleSnackbar } from '../../common/SimpleSnackbar';
@@ -22,18 +21,7 @@ export const SignUp = () => {
       ...request,
       isLoading: true,
     });
-    let postRequest;
-
-    // configure request URL for my phone 😛
-    if (navigator.userAgent.includes('iPhone')) {
-      postRequest = publicRequestMobile({
-        method: 'POST',
-        data,
-        url: '/signup',
-      });
-    } else {
-      postRequest = publicRequest({ method: 'POST', data, url: '/signup' });
-    }
+    let postRequest = publicRequest({ method: 'POST', data, url: '/signup' });
     postRequest
       .then((result) => {
         if (result.data.user) {

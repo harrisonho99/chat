@@ -1,3 +1,4 @@
+// use cookie instead
 const PERSIST = "persist"
 export const persistLocalStorage = (setContext) => {
     try {

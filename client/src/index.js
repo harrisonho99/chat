@@ -11,13 +11,11 @@ import { context } from "./Global/context"
 const Global = createGlobalContext(context)
 window.context = Global
 ReactDOM.render(
-  <React.StrictMode>
-    <RouterProvider>
-      <Provider context={Global}>
-        <App />
-      </Provider>
-    </RouterProvider>
-  </React.StrictMode>
+  <RouterProvider>
+    <Provider context={Global}>
+      <App />
+    </Provider>
+  </RouterProvider>
   ,
   document.getElementById('root')
 );

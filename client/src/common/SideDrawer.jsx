@@ -82,7 +82,7 @@ export const SideDrawer = ({
       <List className={classes.wrapListContact} id="mobile-nav-list-friend">
         {listUserActive
           ? sortListFriend(listUserActive, userID).map((user, index) => (
-            index === 0 ? <Fragment key={user.id}>
+            index === 0 ? <Fragment key={user.userID}>
               <ListItem className={classes.listItem}>
                 <ListItemIcon >
                   <FaceIcon className={classes.userIcon} />
@@ -96,8 +96,8 @@ export const SideDrawer = ({
                 </ListItemIcon>
               </ListItem>
               <Divider />
-            </Fragment> : <Fragment key={user.id}>
-              <Link to={`/chat/${user.id}`} className={classes.contactItem}>
+            </Fragment> : <Fragment key={user.userID}>
+                <Link to={`/chat/${user.userID}`} className={classes.contactItem}>
                 <ListItem button className={classes.listItem}>
                   <ListItemIcon >
                     <AccountCircleTwoToneIcon className={classes.userIcon} />
